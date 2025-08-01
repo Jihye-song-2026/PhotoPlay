@@ -1,0 +1,19 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Allow public read/write access to all files in audio folder
+    match /audio/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // Allow public read/write access to all files in images folder
+    match /images/{allPaths=**} {
+      allow read, write: if true;
+    }
+    
+    // Allow public read/write access to all files (for testing)
+    match /{allPaths=**} {
+      allow read, write: if true;
+    }
+  }
+} 
