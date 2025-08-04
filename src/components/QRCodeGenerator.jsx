@@ -144,46 +144,6 @@ const QRCodeGenerator = ({ data, type, onQRReady, onGenerate }) => {
     return null;
   }
 
-  return (
-    <div style={{ textAlign: 'center', marginTop: '20px' }}>
-      <h3>QR Code Generated!</h3>
-      <p>This QR code contains your {type === 'voice' ? 'voice recording' : 'link'}</p>
-      
-      <div style={{ margin: '20px 0' }}>
-        <img 
-          src={qrCodeURL} 
-          alt="QR Code" 
-          style={{ 
-            maxWidth: '200px', 
-            border: '2px solid #ddd',
-            borderRadius: '10px',
-            padding: '10px',
-            background: 'white'
-          }} 
-        />
-      </div>
-      
-      <button 
-        className="download-btn"
-        onClick={downloadQRCode}
-      >
-        <Download size={16} />
-        Download QR Code
-      </button>
-      
-      <div style={{ marginTop: '15px', fontSize: '0.9rem', color: '#666' }}>
-        <p><strong>How it works:</strong></p>
-        <p>When someone scans this QR code:</p>
-        <ul style={{ listStyle: 'none', padding: 0, margin: '10px 0' }}>
-          {type === 'voice' ? (
-            <li>• Opens Photo Play app to play your voice recording</li>
-          ) : (
-            <li>• Opens Photo Play app to access your link</li>
-          )}
-        </ul>
-      </div>
-    </div>
-  );
 };
 
 export default QRCodeGenerator; 

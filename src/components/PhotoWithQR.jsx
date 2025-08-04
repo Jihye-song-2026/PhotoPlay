@@ -32,11 +32,44 @@ const PhotoWithQR = ({ photoURL, qrCodeURL, onDownload }) => {
         // Convert to blob and download
         canvas.toBlob((blob) => {
           const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.download = `photo-with-qr-${Date.now()}.png`;
-          link.href = url;
-          link.click();
-          URL.revokeObjectURL(url);
+          
+          // Check if we're on mobile
+          const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+          
+          if (isMobile) {
+            // Mobile-friendly approach: use Web Share API or show save instructions
+            try {
+              // Try to use Web Share API first
+              const file = new File([blob], `photo-with-qr-${Date.now()}.png`, { type: 'image/png' });
+              if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                navigator.share({
+                  title: 'Photo with QR Code',
+                  text: 'Check out this photo with an interactive QR code!',
+                  files: [file]
+                }).catch(() => {
+                  // If sharing fails, show save instructions
+                  showMobileSaveInstructions(url);
+                });
+              } else {
+                // Web Share API not available, show save instructions
+                showMobileSaveInstructions(url);
+              }
+            } catch (error) {
+              console.log('Web Share API failed, showing save instructions');
+              showMobileSaveInstructions(url);
+            }
+          } else {
+            // Desktop download
+            const link = document.createElement('a');
+            link.download = `photo-with-qr-${Date.now()}.png`;
+            link.href = url;
+            link.click();
+          }
+          
+          // Clean up the URL after a delay
+          setTimeout(() => {
+            URL.revokeObjectURL(url);
+          }, 1000);
         }, 'image/png');
       };
 
@@ -105,8 +138,8 @@ const PhotoWithQR = ({ photoURL, qrCodeURL, onDownload }) => {
             src={qrCodeURL} 
             alt="QR Code" 
             style={{ 
-              width: '80px', 
-              height: '80px',
+              width: '40px', 
+              height: '40px',
               display: 'block'
             }} 
           />

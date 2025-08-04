@@ -285,17 +285,6 @@ function MainApp() {
               <LinkInput onLinkReady={handleLinkReady} />
             )}
 
-            {/* Generate Button */}
-            {selectedOption && (
-              <button
-                className="generate-btn"
-                onClick={generateQRCode}
-                disabled={isProcessing || (selectedOption === 'voice' && !audioBlob) || (selectedOption === 'link' && !link)}
-              >
-                {isProcessing ? 'Processing...' : 'Generate QR Code'}
-              </button>
-            )}
-
             {/* Error and Success Messages */}
             {error && <div className="error">{error}</div>}
             {success && <div className="success">{success}</div>}
